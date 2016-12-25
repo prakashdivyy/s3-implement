@@ -23,12 +23,32 @@ $Connection->enable_path_style();
 
 $app = new \Slim\Slim();
 
-$app->get('/', function () use($Connection) {
+$app->get('/', function () use ($Connection) {
     $ListResponse = $Connection->list_buckets();
     $Buckets = $ListResponse->body->Buckets->Bucket;
     foreach ($Buckets as $Bucket) {
         echo $Bucket->Name . "\t" . $Bucket->CreationDate . "\n";
     }
+});
+
+$app->get('/uploaded', function () use ($Connection) {
+    $ObjectsListResponse = $Connection->list_objects('my-new-bucket');
+    $Objects = $ObjectsListResponse->body->Contents;
+    foreach ($Objects as $Object) {
+        echo $Object->Key . "\t" . $Object->Size . "\t" . $Object->LastModified . "\n";
+    }
+});
+
+$app->get('/create/:name', function ($name) use ($Connection) {
+    $Connection->create_object('my-new-bucket', $name . '.txt', array(
+        'body' => "Hello " . $name . "!",
+    ));
+});
+
+$app->get('/download/:name', function ($name) use ($Connection) {
+    $url = $Connection->get_object_url('my-new-bucket', $name . '.txt', '1 hour');
+    $url = preg_replace("/^http:/i", "https:", $url);
+    echo $url . "\n";
 });
 
 $app->run();
