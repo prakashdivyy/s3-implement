@@ -47,10 +47,19 @@ $app->get('/create/:name', function ($name) use ($Connection) {
     ));
 });
 
+
+
 $app->get('/download/:name', function ($name) use ($Connection) {
     $url = $Connection->get_object_url('my-new-bucket', $name . '.txt', '1 hour');
     $url = preg_replace("/^http:/i", "https:", $url);
     echo $url . "\n";
 });
+
+$app->post('/uploadFile', 'uploadFile');
+
+function uploadFile(){
+  $app = \Slim\Slim::getInstance();
+  echo fopen($_FILES["fileToUpload"]["tmp_name"]);
+}
 
 $app->run();
