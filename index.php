@@ -70,7 +70,7 @@ $app->post('/uploadFile', function () use ($Connection) {
 $app->get('/gallery', function () use ($Connection){
   $ObjectsListResponse = $Connection->list_objects('my-new-bucket');
   $Objects = $ObjectsListResponse->body->Contents;
-  $app->view->setTemplatesDirectory('./s3-frontend');
+  $app->view()->setTemplatesDirectory('./s3-frontend');
   $app->render('gallery.php', array('Objects' => $Objects ));
 });
 
