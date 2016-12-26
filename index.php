@@ -47,7 +47,6 @@ $app->get('/create/:name', function ($name) use ($Connection) {
     ));
 });
 
-
 $app->get('/download/:name', function ($name) use ($Connection) {
     $url = $Connection->get_object_url('my-new-bucket', $name . '.txt', '1 hour');
     $url = preg_replace("/^http:/i", "https:", $url);
@@ -60,16 +59,22 @@ $app->get('/', function () use ($app) {
 
 $app->post('/', function () use ($Connection, $app) {
     $filename = basename($_FILES["fileToUpload"]["name"]);
-    $size = $_FILES["fileToUpload"]["size"];
-    $file_resource = fopen($_FILES["fileToUpload"]["tmp_name"], 'r');
-    $response = $Connection->create_object('my-new-bucket', $filename, array(
-        'fileUpload' => $file_resource,
-        'length' => $size,
-        'acl' => AmazonS3::ACL_PUBLIC
-    ));
-    if ($response->isOK()) {
-        $uploadURL = 'https://' . HOST . '/' . BUCKET_NAME . '/' . $filename;
-        $app->render('success.php', array('url' => $uploadURL, 'filename' => $filename));
+    $status = $Connection->get_object(BUCKET_NAME, $filename);
+    $status = $status->header['_info']['http_code'];
+    if ($status == 404) {
+        $size = $_FILES["fileToUpload"]["size"];
+        $file_resource = fopen($_FILES["fileToUpload"]["tmp_name"], 'r');
+        $response = $Connection->create_object('my-new-bucket', $filename, array(
+            'fileUpload' => $file_resource,
+            'length' => $size,
+            'acl' => AmazonS3::ACL_PUBLIC
+        ));
+        if ($response->isOK()) {
+            $uploadURL = 'https://' . HOST . '/' . BUCKET_NAME . '/' . $filename;
+            $app->render('success.php', array('url' => $uploadURL, 'filename' => $filename));
+        } else {
+            $app->render('home.php', array('error' => 1));
+        }
     } else {
         $app->render('home.php', array('error' => 1));
     }
