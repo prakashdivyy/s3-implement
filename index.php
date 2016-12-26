@@ -59,7 +59,7 @@ $app->post('/uploadFile', 'uploadFile');
 
 function uploadFile(){
   $app = \Slim\Slim::getInstance();
-  echo fopen($_FILES["fileToUpload"]["tmp_name"]);
+  echo fopen($_FILES["fileToUpload"]["tmp_name"], 'r');
 }
 
 $app->run();
