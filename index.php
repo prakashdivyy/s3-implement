@@ -64,7 +64,12 @@ $app->post('/uploadFile', function () use ($Connection) {
     'length' => $size,
     'acl' => AmazonS3::ACL_PUBLIC
   ));
-  var_dump($response->isOK());
+  if ($response->isOK()){
+    echo "good";
+  } else {
+    echo "bad";
+  }
+
 });
 
 $app->get('/gallery', function () use ($Connection, $app){
