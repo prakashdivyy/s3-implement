@@ -67,7 +67,7 @@ $app->post('/uploadFile', function () use ($Connection) {
   var_dump($response->isOK());
 });
 
-$app->get('/gallery', function () use ($Connection){
+$app->get('/gallery', function () use ($Connection, $app){
   $ObjectsListResponse = $Connection->list_objects('my-new-bucket');
   $Objects = $ObjectsListResponse->body->Contents;
   $app->view()->setTemplatesDirectory('./s3-frontend');
