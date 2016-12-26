@@ -28,6 +28,7 @@ $app->get('/', function () use ($Connection) {
     $Buckets = $ListResponse->body->Buckets->Bucket;
     foreach ($Buckets as $Bucket) {
         echo $Bucket->Name . "\t" . $Bucket->CreationDate . "\n";
+
     }
 });
 
@@ -36,6 +37,7 @@ $app->get('/uploaded', function () use ($Connection) {
     $Objects = $ObjectsListResponse->body->Contents;
     foreach ($Objects as $Object) {
         echo $Object->Key . "\t" . $Object->Size . "\t" . $Object->LastModified . "\n";
+	echo "<br/>";
     }
 });
 
