@@ -34,8 +34,8 @@
       <div class="row center">
         <?php
         foreach ($Objects as $Object) {
-            echo $Object->Key . "\t" . $Object->Size . "\t" . $Object->LastModified . "\n";
-    	      echo "<br/>";
+            echo "<a href='https://grup2-ceph-04.sisdis.ui.ac.id/my-new-bucket/$Object->Key'>"
+            
         }
 
         ?>
