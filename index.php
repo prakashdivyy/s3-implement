@@ -55,7 +55,7 @@ $app->get('/download/:name', function ($name) use ($Connection) {
     echo $url . "\n";
 });
 
-$app->post('/uploadFile', function () use ($Connection)){
+$app->post('/uploadFile', function () use ($Connection) {
   $filename = basename($_FILES["fileToUpload"]["name"]);
   $size = $_FILES["fileToUpload"]["size"];
   $file_resource =  fopen($_FILES["fileToUpload"]["tmp_name"], 'r');
@@ -65,7 +65,7 @@ $app->post('/uploadFile', function () use ($Connection)){
     'acl' => AmazonS3::ACL_PUBLIC
   ));
   var_dump($response->isOK());
-}
+});
 
 
 $app->run();
