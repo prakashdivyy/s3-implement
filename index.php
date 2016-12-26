@@ -58,8 +58,15 @@ $app->get('/download/:name', function ($name) use ($Connection) {
 $app->post('/uploadFile', 'uploadFile');
 
 function uploadFile(){
-  $app = \Slim\Slim::getInstance();
-  echo fopen($_FILES["fileToUpload"]["tmp_name"], 'r');
+  $filename = basename($_FILES["fileToUpload"]["name"]);
+  $size = $_FILES["fileToUpload"]["size"];
+  $file_resource =  fopen($_FILES["fileToUpload"]["tmp_name"], 'r');
+  $response = $Connection->create_object('my-new-bucket', $filename, array(
+    'fileUpload' => $file_resource,
+    'length' => $size,
+    'acl' => AmazonS3::ACL_PUBLIC
+  ));
+  var_dump($response->isOK());
 }
 
 $app->run();
