@@ -14,7 +14,7 @@
   <nav class="light-blue lighten-1" role="navigation">
     <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Kelompok 2 Sisdis</a>
       <ul class="right hide-on-med-and-down">
-        <li><a href="index.html">Home</a></li>
+        <li><a href="s3-frontend/index.html">Home</a></li>
       </ul>
 
       <ul id="nav-mobile" class="side-nav">
@@ -34,7 +34,7 @@
       <div class="row center">
         <?php
         foreach ($Objects as $Object) {
-            echo "<a href='https://grup2-ceph-04.sisdis.ui.ac.id/my-new-bucket/".$Object->Key."'> ".$Object->Key."</a>";
+            echo "<a href='https://grup2-ceph-04.sisdis.ui.ac.id/my-new-bucket/".$Object->Key."'> ".$Object->Key."</a><br/>";
         }
 
         ?>
