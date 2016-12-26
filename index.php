@@ -55,9 +55,7 @@ $app->get('/download/:name', function ($name) use ($Connection) {
     echo $url . "\n";
 });
 
-$app->post('/uploadFile', 'uploadFile');
-
-function uploadFile(){
+$app->post('/uploadFile', function () use ($Connection)){
   $filename = basename($_FILES["fileToUpload"]["name"]);
   $size = $_FILES["fileToUpload"]["size"];
   $file_resource =  fopen($_FILES["fileToUpload"]["tmp_name"], 'r');
@@ -68,5 +66,6 @@ function uploadFile(){
   ));
   var_dump($response->isOK());
 }
+
 
 $app->run();
