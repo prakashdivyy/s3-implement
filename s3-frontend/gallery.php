@@ -34,8 +34,7 @@
       <div class="row center">
         <?php
         foreach ($Objects as $Object) {
-            echo "<a href='https://grup2-ceph-04.sisdis.ui.ac.id/my-new-bucket/$Object->Key'>"
-            
+            echo "<a href='https://grup2-ceph-04.sisdis.ui.ac.id/my-new-bucket/".$Object->Key."'> $Object->Key </a>"
         }
 
         ?>
