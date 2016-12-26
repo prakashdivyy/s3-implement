@@ -37,7 +37,7 @@ $app->get('/uploaded', function () use ($Connection) {
     $Objects = $ObjectsListResponse->body->Contents;
     foreach ($Objects as $Object) {
         echo $Object->Key . "\t" . $Object->Size . "\t" . $Object->LastModified . "\n";
-	echo "<br/>";
+	      echo "<br/>";
     }
 });
 
@@ -67,5 +67,11 @@ $app->post('/uploadFile', function () use ($Connection) {
   var_dump($response->isOK());
 });
 
+$app->get('/gallery', function () use ($Connection){
+  $ObjectsListResponse = $Connection->list_objects('my-new-bucket');
+  $Objects = $ObjectsListResponse->body->Contents;
+  $app->view->setTemplatesDirectory('./s3-frontend');
+  $app->render('gallery.php', array('Objects' => $Objects ));
+});
 
 $app->run();
