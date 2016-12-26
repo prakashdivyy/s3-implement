@@ -32,11 +32,17 @@
       </div>
       <div class="row center">
         <form method="post" action="../uploadFile" enctype="multipart/form-data">
-          <div class="btn-large waves-effect waves-light orange">
-            <input type="file" name="fileToUpload" id="fileToUpload" value="Browse">
-          </div>
-          <div class="btn-large waves-effect waves-light orange">
-            <input type="submit" value="Upload Image" name="submit">
+          <div class="file-field input-field">
+            <div class="btn-large waves-effect waves-light orange">
+              <span>File</span>
+              <input type="file" name="fileToUpload" id="fileToUpload">
+            </div>
+            <div class="file-path-wrapper">
+              <input class="file-path validate" type="text">
+            </div>
+            <div class="btn-large waves-effect waves-light orange">
+              <input type="submit" value="Upload Image" name="submit">
+            </div>
           </div>
         </form>
       </div>
