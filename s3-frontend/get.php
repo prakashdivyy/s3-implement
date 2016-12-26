@@ -32,7 +32,7 @@
       </div>
 
       <div class="row center">
-        <h5 class="header col s12 light">disini ntar filenya ye</h5>
+        <h5 class="header col s12 light"><a href="https://grup2-ceph-04.sisdis.ui.ac.id/my-new-bucket/<?php echo $filename;?>"><?php echo $filename ?></a></h5>
       </div>
 
       <div class="row center">
@@ -74,7 +74,7 @@
             <li><a class="white-text" href="#!">1306409513</a></li>
             <li><a class="white-text" href="#!">1306397904</a></li>
             <li><a class="white-text" href="#!">1306381616</a></li>
-            <li><a class="white-text" href="#!">1306381811</a></li>            
+            <li><a class="white-text" href="#!">1306381811</a></li>
           </ul>
         </div>
       </div>
