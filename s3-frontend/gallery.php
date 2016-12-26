@@ -32,11 +32,13 @@
       </div>
 
       <div class="row center">
-        <h5 class="header col s12 light">disini ntar filenya ye</h5>
-      </div>
+        <?php
+        foreach ($Objects as $Object) {
+            echo $Object->Key . "\t" . $Object->Size . "\t" . $Object->LastModified . "\n";
+    	      echo "<br/>";
+        }
 
-      <div class="row center">
-        <h7 class="header col s12 light"><a href="index.html"> Upload more</a></h7>
+        ?>
       </div>
 
       <br><br>
