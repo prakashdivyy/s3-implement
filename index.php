@@ -88,8 +88,6 @@ $app->post('/copy/:filename', function () use ($Connection, $app) {
     $filename_new = $app->request->params('filename_new');
     $bucket_destination = $app->request->params('bucket_destination');
     $status = $Connection->get_object($bucket_destination, $filename_new);
-    $ObjectsListResponse = $Connection->list_objects(BUCKET_NAME);
-    $Objects = $ObjectsListResponse->body->Contents;
     $status = $status->header['_info']['http_code'];
     if ($status == 404) {
         $response = $Connection->copy_object(
@@ -105,6 +103,8 @@ $app->post('/copy/:filename', function () use ($Connection, $app) {
                 'acl' => AmazonS3::ACL_PUBLIC
             )
         );
+        $ObjectsListResponse = $Connection->list_objects(BUCKET_NAME);
+        $Objects = $ObjectsListResponse->body->Contents;
         if ($response->isOK()) {
             $app->render('gallery.php', array('filename' => $filename, 'success' => 0, 'Objects' => $Objects, 'Copy' => 3));
         } else {
