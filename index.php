@@ -60,6 +60,7 @@ $app->post('/copyFile', function () use ($Connection, $app) {
     $status = $Connection->get_object($bucket_destination, $filename_new);
     $ObjectsListResponse = $Connection->list_objects(BUCKET_NAME);
     $Objects = $ObjectsListResponse->body->Contents;
+    $status = $status->header['_info']['http_code'];
     if ($status == 404) {
         $response = $Connection->copy_object(
             array( // Source
