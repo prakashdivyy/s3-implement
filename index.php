@@ -6,7 +6,7 @@ define('AWS_SECRET_KEY', 'cEZgXggQOFH7ns8iPDRtFJffog8XjJOfTOt2wZnR');
 define('AWS_CANONICAL_ID', 'grup2');
 define('AWS_CANONICAL_NAME', 'grup2');
 define('HOST', 'grup2-ceph-04.sisdis.ui.ac.id');
-define('BUCKET_NAME', 'my-new-bucket');
+define('BUCKET_NAME', 'imp-s3');
 
 $Connection = new AmazonS3(array(
     'key' => AWS_KEY,
