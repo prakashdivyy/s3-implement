@@ -58,7 +58,6 @@ $app->get('/', function () use ($app) {
 });
 
 
-$app->post('/delete'), function
 $app->get('/delete', function () use ($Connection, $app){
   $filename = $app->request->get('filename');
   $status = $Connection->get_object(BUCKET_NAME, $filename);
