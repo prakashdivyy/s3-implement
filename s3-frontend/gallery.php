@@ -95,16 +95,18 @@
   <script src="s3-frontend/js/init.js"></script>
   <?php
     if (isset($success) && isset($filename)) {
-      if ($success){
+      if ($success){?>
         <script>
             var $toastContent = $('<span>File '.$filename.' has succesfully been deleted</span>');
             Materialize.toast($toastContent, 3000);
         </script>
-      } else {
+  <?php
+      } else { ?>
         <script>
             var $toastContent = $('<span>Error occured when deleting '.$filename.' </span>');
             Materialize.toast($toastContent, 3000);
         </script>
+  <?php
       }
     }
   ?>
