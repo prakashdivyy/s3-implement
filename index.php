@@ -102,9 +102,9 @@ $app->post('/copyFile', function () use ($Connection, $app){
     )
   );
   if ($response->isOK()) {
-    $app->redirect('/');
+    $app->redirect('/gallery');
   } else {
-    $app->redirect('/');
+    $app->redirect('/gallery');
   }
 });
 
