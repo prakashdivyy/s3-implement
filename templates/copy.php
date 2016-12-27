@@ -42,7 +42,7 @@
             <select>
               <?php
               foreach ($Buckets as $Bucket) {
-                  echo "<option value='".$Bucket."'>".$Bucket."</option>"
+                  echo "<option value='".$Bucket."'>".$Bucket."</option>";
               }
               ?>
             </select>
