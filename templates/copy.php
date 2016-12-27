@@ -36,35 +36,22 @@
 
         <form action="copyFile" method="POST" id="data" enctype="multipart/form-data">
           <div class="file-field input-field">
-            <input type="text" name="filename" value="<?php $filename ?>" disabled>
-            <input type="text" name="bucket_source" value="<?php $bucket_source ?>" disabled>
+            <input type="text" name="filename" value="<?php echo $filename ?>" disabled>
+            <input type="text" name="bucket_source" value="<?php echo $bucket_source ?>" disabled>
             <input type="text" name="filename_new">
-            <select>
+            <select name="bucket_destination">
               <?php
               foreach ($Buckets as $Bucket) {
                   echo "<option value='".$Bucket."'>".$Bucket."</option>";
               }
               ?>
             </select>
-            <button type="submit" form="data" id="download-button" class="btn-large waves-effect waves-light orange">
-                Copy File <i class="material-icons right">send</i>
-            </button>
           </div>
         </form>
+        <button type="submit" form="data" id="download-button" class="btn-large waves-effect waves-light orange">
+            Copy File <i class="material-icons right">send</i>
+        </button>
 
-
-
-
-        <h1 class="header center orange-text">S3 - Object Storage System</h1>
-        <div class="row center">
-            <h5 class="header col s12 light">Your file has successfully uploaded:</h5>
-        </div>
-        <div class="row center">
-            <h5 class="header col s12 light"><a href="<?php echo $url; ?>"><?php echo $filename; ?></a></h5>
-        </div>
-        <div class="row center">
-            <h7 class="header col s12 light"><a href=""> Upload more</a></h7>
-        </div>
         <br><br>
     </div>
 </div>
