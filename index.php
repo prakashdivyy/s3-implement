@@ -58,13 +58,8 @@ $app->get('/', function () use ($app) {
 });
 
 
-$app->post('/delete', function () use ($Connection, $app){
 
-});
-
-$app->get('/delete', function () use ($Connection, $app){
-  echo $filename;
-  $filename = $app->request->get('filename');
+$app->get('/delete/:filename', function ($filename) use ($Connection, $app){
   $status = $Connection->get_object(BUCKET_NAME, $filename);
   $status = $status->header['_info']['http_code'];
   if ($status != 404) {
