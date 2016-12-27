@@ -30,11 +30,7 @@
 <div class="section no-pad-bot" id="index-banner">
     <div class="container">
         <br><br>
-        <form action="copyFile" method="POST" >
-
-
-
-        <form action="copyFile" method="POST" id="data" enctype="multipart/form-data">
+        <form action="/copyFile" method="POST" id="data" enctype="multipart/form-data">
           <div class="file-field input-field">
             <input type="text" name="filename" value="<?php echo $filename ?>" disabled>
             <input type="text" name="bucket_source" value="<?php echo $bucket_source ?>" disabled>
