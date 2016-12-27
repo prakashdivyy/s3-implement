@@ -23,89 +23,65 @@ $Connection->enable_path_style();
 
 $app = new \Slim\Slim();
 
-$app->get('/list', function () use ($Connection) {
-    $ListResponse = $Connection->list_buckets();
-    $Buckets = $ListResponse->body->Buckets->Bucket;
-    foreach ($Buckets as $Bucket) {
-        echo $Bucket->Name . "\t" . $Bucket->CreationDate . "\n";
-    }
-});
-
-$app->get('/uploaded', function () use ($Connection) {
-    $ObjectsListResponse = $Connection->list_objects('my-new-bucket');
-    $Objects = $ObjectsListResponse->body->Contents;
-    foreach ($Objects as $Object) {
-        echo $Object->Key . "\t" . $Object->Size . "\t" . $Object->LastModified . "\n";
-        echo "<br/>";
-    }
-});
-
-$app->get('/create/:name', function ($name) use ($Connection) {
-    $Connection->create_object('my-new-bucket', $name . '.txt', array(
-        'body' => "Hello " . $name . "!",
-    ));
-});
-
-$app->get('/download/:name', function ($name) use ($Connection) {
-    $url = $Connection->get_object_url('my-new-bucket', $name . '.txt', '1 hour');
-    $url = preg_replace("/^http:/i", "https:", $url);
-    echo $url . "\n";
-});
-
 $app->get('/', function () use ($app) {
     $app->render('home.php', array('error' => 0));
 });
 
+$app->get('/delete/:filename', function ($filename) use ($Connection, $app) {
+    $status = $Connection->get_object(BUCKET_NAME, $filename);
+    $status = $status->header['_info']['http_code'];
+    if ($status != 404) {
+        $response = $Connection->delete_object(BUCKET_NAME, $filename);
+        $ObjectsListResponse = $Connection->list_objects(BUCKET_NAME);
+        $Objects = $ObjectsListResponse->body->Contents;
+        if ($response->isOK()) {
+            $app->render('gallery.php', array('filename' => $filename, 'success' => 1, 'Objects' => $Objects, 'Copy' => 0));
+        } else {
+            $app->render('gallery.php', array('filename' => $filename, 'success' => 2, 'Objects' => $Objects, 'Copy' => 0));
+        }
+    }
+});
 
+$app->get('/copy/:filename', function ($filename) use ($Connection, $app) {
+    $ListResponse = $Connection->list_buckets();
+    $Buckets = $ListResponse->body->Buckets->Bucket;
+    $status = $Connection->get_object(BUCKET_NAME, $filename);
+    $status = $status->header['_info']['http_code'];
+    if ($status != 404) {
+        $app->render('copy.php', array('filename' => $filename, 'bucket_source' => BUCKET_NAME, 'Buckets' => $Buckets));
+    }
+});
 
-$app->get('/delete/:filename', function ($filename) use ($Connection, $app){
-  $status = $Connection->get_object(BUCKET_NAME, $filename);
-  $status = $status->header['_info']['http_code'];
-  if ($status != 404) {
-    $response = $Connection->delete_object(BUCKET_NAME  , $filename);
+$app->post('/copyFile', function () use ($Connection, $app) {
+    $filename = $app->request->params('filename');
+    $bucket_source = $app->request->params('bucket_source');
+    $filename_new = $app->request->params('filename_new');
+    $bucket_destination = $app->request->params('bucket_destination');
+    $status = $Connection->get_object($bucket_destination, $filename_new);
     $ObjectsListResponse = $Connection->list_objects(BUCKET_NAME);
     $Objects = $ObjectsListResponse->body->Contents;
-    if ($response->isOK()){
-      $app->render('gallery.php', array('filename' => $filename, 'success' => 1, 'Objects' => $Objects));
+    if ($status == 404) {
+        $response = $Connection->copy_object(
+            array( // Source
+                'bucket' => $bucket_source,
+                'filename' => $filename
+            ),
+            array( // Destination
+                'bucket' => $bucket_destination,
+                'filename' => $filename_new
+            ),
+            array( // Optional parameters
+                'acl' => AmazonS3::ACL_PUBLIC
+            )
+        );
+        if ($response->isOK()) {
+            $app->render('gallery.php', array('filename' => $filename, 'success' => 0, 'Objects' => $Objects, 'Copy' => 3));
+        } else {
+            $app->render('gallery.php', array('filename' => $filename, 'success' => 0, 'Objects' => $Objects, 'Copy' => 4));
+        }
     } else {
-      $app->render('gallery.php', array('filename' => $filename, 'success' => 0, 'Objects' => $Objects));
+        $app->render('gallery.php', array('filename' => $filename, 'success' => 0, 'Objects' => $Objects, 'Copy' => 2));
     }
-  }
-});
-
-$app->get('/copy/:filename', function($filename) use ($Connection, $app){
-  $ListResponse = $Connection->list_buckets();
-  $Buckets = $ListResponse->body->Buckets->Bucket;
-  $status = $Connection->get_object(BUCKET_NAME, $filename);
-  $status = $status->header['_info']['http_code'];
-    if ($status != 404) {
-      $app->render('copy.php', array('filename' => $filename, 'bucket_source' => BUCKET_NAME, 'Buckets' => $Buckets));
-    }
-});
-
-$app->post('/copyFile', function () use ($Connection, $app){
-  $filename = $app->request->params('filename');
-  $bucket_source = $app->request->params('bucket_source');
-  $filename_new = $app->request->params('filename_new');
-  $bucket_destination = $app->request->params('bucket_destination');
-  $response = $Connection->copy_object(
-    array( // Source
-        'bucket'   => $bucket_source,
-        'filename' => $filename
-    ),
-    array( // Destination
-        'bucket'   => $bucket_destination,
-        'filename' => $filename_new
-    ),
-    array( // Optional parameters
-        'acl'  => AmazonS3::ACL_PUBLIC
-    )
-  );
-  if ($response->isOK()) {
-    $app->redirect('gallery');
-  } else {
-    $app->redirect('gallery');
-  }
 });
 
 $app->post('/', function () use ($Connection, $app) {
@@ -134,9 +110,7 @@ $app->post('/', function () use ($Connection, $app) {
 $app->get('/gallery', function () use ($Connection, $app) {
     $ObjectsListResponse = $Connection->list_objects(BUCKET_NAME);
     $Objects = $ObjectsListResponse->body->Contents;
-    $app->render('gallery.php', array('Objects' => $Objects));
+    $app->render('gallery.php', array('filename' => '', 'success' => 0, 'Objects' => $Objects, 'Copy' => 1));
 });
-
-
 
 $app->run();

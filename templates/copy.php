@@ -47,8 +47,6 @@
               Copy File <i class="material-icons right">send</i>
           </button>
         </form>
-
-
         <br><br>
     </div>
 </div>
