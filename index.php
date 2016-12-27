@@ -60,12 +60,14 @@ $app->get('/', function () use ($app) {
 $app->get('/delete/:filename', function ($filename) use ($Connection, $app){
   $status = $Connection->get_object(BUCKET_NAME, $filename);
   $status = $status->header['_info']['http_code'];
+  $ObjectsListResponse = $Connection->list_objects(BUCKET_NAME);
+  $Objects = $ObjectsListResponse->body->Contents;
   if ($status != 404) {
     $response = $Connection->delete_object(BUCKET_NAME  , $filename);
     if ($response->isOK()){
-      $app->render('gallery.php', array('filename' => $filename, 'success' => 1));
+      $app->render('gallery.php', array('filename' => $filename, 'success' => 1, 'Objects' => $Objects));
     } else {
-      $app->render('gallery.php', array('filename' => $filename, 'success' => 0));
+      $app->render('gallery.php', array('filename' => $filename, 'success' => 0), 'Objects' => $Objects));
     }
   }
 });
@@ -98,5 +100,7 @@ $app->get('/gallery', function () use ($Connection, $app) {
     $Objects = $ObjectsListResponse->body->Contents;
     $app->render('gallery.php', array('Objects' => $Objects));
 });
+
+
 
 $app->run();
