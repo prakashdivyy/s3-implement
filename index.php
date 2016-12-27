@@ -67,7 +67,7 @@ $app->get('/delete/:filename', function ($filename) use ($Connection, $app){
     if ($response->isOK()){
       $app->render('gallery.php', array('filename' => $filename, 'success' => 1, 'Objects' => $Objects));
     } else {
-      $app->render('gallery.php', array('filename' => $filename, 'success' => 0), 'Objects' => $Objects));
+      $app->render('gallery.php', array('filename' => $filename, 'success' => 0, 'Objects' => $Objects));
     }
   }
 });
