@@ -63,9 +63,9 @@ $app->get('/delete/:filename', function ($filename) use ($Connection, $app){
   if ($status != 404) {
     $response = $Connection->delete_object(BUCKET_NAME  , $filename);
     if ($response->isOK()){
-      $app->render('s3-frontend/gallery.php', array('filename' => $filename, 'success' => 1));
+      $app->render('gallery.php', array('filename' => $filename, 'success' => 1));
     } else {
-      $app->render('s3-frontend/gallery.php', array('filename' => $filename, 'success' => 0));
+      $app->render('gallery.php', array('filename' => $filename, 'success' => 0));
     }
   }
 });
@@ -94,10 +94,9 @@ $app->post('/', function () use ($Connection, $app) {
 });
 
 $app->get('/gallery', function () use ($Connection, $app) {
-    $ObjectsListResponse = $Connection->list_objects('my-new-bucket');
+    $ObjectsListResponse = $Connection->list_objects(BUCKET_NAME);
     $Objects = $ObjectsListResponse->body->Contents;
-    $app->view()->setTemplatesDirectory('./');
-    $app->render('s3-frontend/gallery.php', array('Objects' => $Objects));
+    $app->render('gallery.php', array('Objects' => $Objects));
 });
 
 $app->run();
