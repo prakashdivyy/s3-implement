@@ -28,7 +28,6 @@ $app->get('/list', function () use ($Connection) {
     $Buckets = $ListResponse->body->Buckets->Bucket;
     foreach ($Buckets as $Bucket) {
         echo $Bucket->Name . "\t" . $Bucket->CreationDate . "\n";
-
     }
 });
 
@@ -72,6 +71,16 @@ $app->get('/delete/:filename', function ($filename) use ($Connection, $app){
       $app->render('gallery.php', array('filename' => $filename, 'success' => 0, 'Objects' => $Objects));
     }
   }
+});
+
+$app->get('/copy/:filename', function($filename) use ($Connection, $app){
+  $ListResponse = $Connection->list_buckets();
+  $Buckets = $ListResponse->body->Buckets->Bucket;
+  $status = $Connection->get_object(BUCKET_NAME, $filename);
+  $status = $status->header['_info']['http_code'];
+    if ($status != 404) {
+      $app->render->('copy.php', array('filename' => $filename, 'bucket_source' => BUCKET_NAME, 'bucket_list' => $Buckets));
+    }
 });
 
 $app->post('/', function () use ($Connection, $app) {
