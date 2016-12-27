@@ -47,10 +47,11 @@
               ?>
             </select>
           </div>
+          <button type="submit" form="data" id="download-button" class="btn-large waves-effect waves-light orange">
+              Copy File <i class="material-icons right">send</i>
+          </button>
         </form>
-        <button type="submit" form="data" id="download-button" class="btn-large waves-effect waves-light orange">
-            Copy File <i class="material-icons right">send</i>
-        </button>
+
 
         <br><br>
     </div>
