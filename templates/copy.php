@@ -13,16 +13,17 @@
 </head>
 <body>
 <nav class="light-blue lighten-1" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Kelompok 2 Sisdis</a>
+    <div class="nav-wrapper container"><a id="logo-container" href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/"
+                                          class="brand-logo">Kelompok 2 Sisdis</a>
         <ul class="right hide-on-med-and-down">
-          <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/">Home</a></li>
-          <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/gallery">Gallery</a></li>
-          <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-swift/">Swift</a></li>
+            <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/">Home</a></li>
+            <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/gallery">Gallery</a></li>
+            <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-swift/">Swift</a></li>
         </ul>
         <ul id="nav-mobile" class="side-nav">
-          <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/">Home</a></li>
-          <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/gallery">Gallery</a></li>
-          <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-swift/">Swift</a></li>
+            <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/">Home</a></li>
+            <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/gallery">Gallery</a></li>
+            <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-swift/">Swift</a></li>
         </ul>
         <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
@@ -30,22 +31,22 @@
 <div class="section no-pad-bot" id="index-banner">
     <div class="container">
         <br><br>
-        <form action="../copyFile" method="POST" id="data" enctype="multipart/form-data">
-          <div class="file-field input-field">
-            <input type="text" name="filename" value="<?php echo $filename ?>" disabled>
-            <input type="text" name="bucket_source" value="<?php echo $bucket_source ?>" disabled>
-            <input type="text" name="filename_new">
-            <select name="bucket_destination">
-              <?php
-              foreach ($Buckets as $Bucket) {
-                  echo "<option value='".$Bucket->Name."'>".$Bucket->Name."</option>";
-              }
-              ?>
-            </select>
-          </div>
-          <button type="submit" form="data" id="download-button" class="btn-large waves-effect waves-light orange">
-              Copy File <i class="material-icons right">send</i>
-          </button>
+        <form action="" method="POST" id="data" enctype="multipart/form-data">
+            <div class="file-field input-field">
+                <input type="text" name="filename" value="<?php echo $filename ?>" disabled>
+                <input type="text" name="bucket_source" value="<?php echo $bucket_source ?>" disabled>
+                <input type="text" name="filename_new">
+                <select name="bucket_destination">
+                    <?php
+                    foreach ($Buckets as $Bucket) {
+                        echo "<option value='" . $Bucket->Name . "'>" . $Bucket->Name . "</option>";
+                    }
+                    ?>
+                </select>
+            </div>
+            <button type="submit" form="data" id="download-button" class="btn-large waves-effect waves-light orange">
+                Copy File <i class="material-icons right">send</i>
+            </button>
         </form>
         <br><br>
     </div>
@@ -89,9 +90,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 <script src="http://materializecss.com/templates/starter-template/js/init.js"></script>
 <script>
-  $(document).ready(function() {
-    $('select').material_select();
-  });
+    $(document).ready(function () {
+        $('select').material_select();
+    });
 </script>
 </body>
 </html>

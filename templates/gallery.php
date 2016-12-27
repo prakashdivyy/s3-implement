@@ -13,7 +13,8 @@
 </head>
 <body>
 <nav class="light-blue lighten-1" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Kelompok 2 Sisdis</a>
+    <div class="nav-wrapper container"><a id="logo-container" href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/"
+                                          class="brand-logo">Kelompok 2 Sisdis</a>
         <ul class="right hide-on-med-and-down">
             <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/">Home</a></li>
             <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/gallery">Gallery</a></li>
@@ -32,7 +33,7 @@
         <br><br>
         <h1 class="header center orange-text">S3 - Object Storage System</h1>
         <div class="row center">
-            <h5 class="header col s12 light">Your file has successfully uploaded:</h5>
+            <h5 class="header col s12 light">List of all files uploaded:</h5>
         </div>
         <div class="row center">
             <?php
@@ -84,7 +85,7 @@
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
 <script src="http://materializecss.com/templates/starter-template/js/init.js"></script>
-<?php  if ($success === 1) { ?>
+<?php if ($success === 1) { ?>
     <script>
         var $toastContent = $('<span>File <?php echo $filename; ?> has succesfully been deleted</span>');
         Materialize.toast($toastContent, 3000);

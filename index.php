@@ -27,6 +27,36 @@ $app->get('/', function () use ($app) {
     $app->render('home.php', array('error' => 0));
 });
 
+
+$app->post('/', function () use ($Connection, $app) {
+    $filename = basename($_FILES["fileToUpload"]["name"]);
+    $status = $Connection->get_object(BUCKET_NAME, $filename);
+    $status = $status->header['_info']['http_code'];
+    if ($status == 404) {
+        $size = $_FILES["fileToUpload"]["size"];
+        $file_resource = fopen($_FILES["fileToUpload"]["tmp_name"], 'r');
+        $response = $Connection->create_object('my-new-bucket', $filename, array(
+            'fileUpload' => $file_resource,
+            'length' => $size,
+            'acl' => AmazonS3::ACL_PUBLIC
+        ));
+        if ($response->isOK()) {
+            $uploadURL = 'https://' . HOST . '/' . BUCKET_NAME . '/' . $filename;
+            $app->render('success.php', array('url' => $uploadURL, 'filename' => $filename));
+        } else {
+            $app->render('home.php', array('error' => 1));
+        }
+    } else {
+        $app->render('home.php', array('error' => 1));
+    }
+});
+
+$app->get('/gallery', function () use ($Connection, $app) {
+    $ObjectsListResponse = $Connection->list_objects(BUCKET_NAME);
+    $Objects = $ObjectsListResponse->body->Contents;
+    $app->render('gallery.php', array('filename' => '', 'success' => 0, 'Objects' => $Objects, 'Copy' => 1));
+});
+
 $app->get('/delete/:filename', function ($filename) use ($Connection, $app) {
     $status = $Connection->get_object(BUCKET_NAME, $filename);
     $status = $status->header['_info']['http_code'];
@@ -52,7 +82,7 @@ $app->get('/copy/:filename', function ($filename) use ($Connection, $app) {
     }
 });
 
-$app->post('/copyFile', function () use ($Connection, $app) {
+$app->post('/copy/:filename', function () use ($Connection, $app) {
     $filename = $app->request->params('filename');
     $bucket_source = $app->request->params('bucket_source');
     $filename_new = $app->request->params('filename_new');
@@ -83,35 +113,6 @@ $app->post('/copyFile', function () use ($Connection, $app) {
     } else {
         $app->render('gallery.php', array('filename' => $filename, 'success' => 0, 'Objects' => $Objects, 'Copy' => 2));
     }
-});
-
-$app->post('/', function () use ($Connection, $app) {
-    $filename = basename($_FILES["fileToUpload"]["name"]);
-    $status = $Connection->get_object(BUCKET_NAME, $filename);
-    $status = $status->header['_info']['http_code'];
-    if ($status == 404) {
-        $size = $_FILES["fileToUpload"]["size"];
-        $file_resource = fopen($_FILES["fileToUpload"]["tmp_name"], 'r');
-        $response = $Connection->create_object('my-new-bucket', $filename, array(
-            'fileUpload' => $file_resource,
-            'length' => $size,
-            'acl' => AmazonS3::ACL_PUBLIC
-        ));
-        if ($response->isOK()) {
-            $uploadURL = 'https://' . HOST . '/' . BUCKET_NAME . '/' . $filename;
-            $app->render('success.php', array('url' => $uploadURL, 'filename' => $filename));
-        } else {
-            $app->render('home.php', array('error' => 1));
-        }
-    } else {
-        $app->render('home.php', array('error' => 1));
-    }
-});
-
-$app->get('/gallery', function () use ($Connection, $app) {
-    $ObjectsListResponse = $Connection->list_objects(BUCKET_NAME);
-    $Objects = $ObjectsListResponse->body->Contents;
-    $app->render('gallery.php', array('filename' => '', 'success' => 0, 'Objects' => $Objects, 'Copy' => 1));
 });
 
 $app->run();

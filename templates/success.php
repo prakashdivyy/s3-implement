@@ -13,16 +13,17 @@
 </head>
 <body>
 <nav class="light-blue lighten-1" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Kelompok 2 Sisdis</a>
+    <div class="nav-wrapper container"><a id="logo-container" href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/"
+                                          class="brand-logo">Kelompok 2 Sisdis</a>
         <ul class="right hide-on-med-and-down">
-          <li><a href="../imp-s3/">Home</a></li>
-          <li><a href="../imp-s3/gallery">Gallery</a></li>
-          <li><a href="../imp-swift/">Swift</a></li>
+            <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/">Home</a></li>
+            <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/gallery">Gallery</a></li>
+            <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-swift/">Swift</a></li>
         </ul>
         <ul id="nav-mobile" class="side-nav">
-          <li><a href="../imp-s3/">Home</a></li>
-          <li><a href="../imp-s3/gallery">Gallery</a></li>
-          <li><a href="../imp-swift/">Swift</a></li>
+            <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/">Home</a></li>
+            <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/gallery">Gallery</a></li>
+            <li><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-swift/">Swift</a></li>
         </ul>
         <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
