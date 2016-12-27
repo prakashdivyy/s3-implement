@@ -83,6 +83,31 @@ $app->get('/copy/:filename', function($filename) use ($Connection, $app){
     }
 });
 
+$app->post('/copyFile', function () use ($Connection, $app){
+  $filename = $app->request->params('filename');
+  $bucket_source = $app->request->params('bucket_source');
+  $filename_new = $app->request->params('filename_new');
+  $bucket_destination = $app->request->params('bucket_destination');
+  $response = $Connection->copy_object(
+    array( // Source
+        'bucket'   => $bucket_source,
+        'filename' => $filename
+    ),
+    array( // Destination
+        'bucket'   => $bucket_destination,
+        'filename' => $filename_new
+    ),
+    array( // Optional parameters
+        'acl'  => AmazonS3::ACL_PUBLIC
+    )
+  );
+  if ($response->isOK()) {
+    $app->redirect('/');
+  } else {
+    $app->redirect('/');
+  }
+});
+
 $app->post('/', function () use ($Connection, $app) {
     $filename = basename($_FILES["fileToUpload"]["name"]);
     $status = $Connection->get_object(BUCKET_NAME, $filename);
