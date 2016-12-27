@@ -34,7 +34,8 @@
       <div class="row center">
         <?php
         foreach ($Objects as $Object) {
-            echo "<a href='https://grup2-ceph-04.sisdis.ui.ac.id/my-new-bucket/".$Object->Key."'> ".$Object->Key."</a><br/>";
+            echo "<a href='https://grup2-ceph-04.sisdis.ui.ac.id/my-new-bucket/".$Object->Key."'> ".$Object->Key."</a>";
+            echo "<a href='http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/delete/".$Object->Key."'><i class='material-icons'>delete</i></a>"
         }
 
         ?>
@@ -92,6 +93,20 @@
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="s3-frontend/js/materialize.js"></script>
   <script src="s3-frontend/js/init.js"></script>
-
+  <?php
+    if (isset($success) && isset($filename)) {
+      if ($success){
+        <script>
+            var $toastContent = $('<span>File '.$filename.' has succesfully been deleted</span>');
+            Materialize.toast($toastContent, 3000);
+        </script>
+      } else {
+        <script>
+            var $toastContent = $('<span>Error occured when deleting '.$filename.' </span>');
+            Materialize.toast($toastContent, 3000);
+        </script>
+      }
+    }
+  ?>
   </body>
 </html>

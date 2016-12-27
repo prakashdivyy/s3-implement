@@ -57,6 +57,19 @@ $app->get('/', function () use ($app) {
     $app->render('home.php', array('error' => 0));
 });
 
+$app->get('/delete/:filename', function ($filename) use ($Connection){
+  $status = $Connection->get_object(BUCKET_NAME, $name);
+  $status = $status->header['_info']['http_code'];
+  if ($status != 404) {
+    $response = $s3->delete_object($bucket, $name);
+    if ($response->isOK()){
+      $app->render('se-frontend/gallery.php', array('filename' => $name, 'success' => 1));
+    } else {
+      $app->render('se-frontend/gallery.php', array('filename' => $name, 'success' => 0));
+    }
+  }
+});
+
 $app->post('/', function () use ($Connection, $app) {
     $filename = basename($_FILES["fileToUpload"]["name"]);
     $status = $Connection->get_object(BUCKET_NAME, $filename);
