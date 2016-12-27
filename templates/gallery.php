@@ -98,12 +98,16 @@
   <?php
   if (isset($success) && isset($filename)) {
       echo $success;
-      if ($success){?>
+      if ($success){
+        echo "Harusnya sukses";
+        ?>
         <script>
             var $toastContent = $('<span>File "'.<?php echo $filename; ?>.'" has succesfully been deleted</span>');
             Materialize.toast($toastContent, 3000);
         </script>
-  <?php } else { ?>
+  <?php } else {
+        echo "Harusnya gagal";
+        ?>
         <script>
             var $toastContent = $('<span>Error occured when deleting "'.<?php echo $filename; ?>.'" </span>');
             Materialize.toast($toastContent, 3000);
