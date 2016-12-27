@@ -40,7 +40,7 @@
         <?php
         foreach ($Objects as $Object) {
             echo "<a href='https://grup2-ceph-04.sisdis.ui.ac.id/my-new-bucket/".$Object->Key."'> ".$Object->Key."</a>";
-            echo "<a href='http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/delete/".$Object->Key."'><i class='material-icons'>delete</i></a><br/>";
+            echo "<a href='http://grup2-ceph-04.sisdis.ui.ac.id/imp-s3/delete?filename=".$Object->Key."'><i class='material-icons'>delete</i></a><br/>";
         }
 
         ?>

@@ -57,7 +57,10 @@ $app->get('/', function () use ($app) {
     $app->render('home.php', array('error' => 0));
 });
 
-$app->get('/delete/:filename', function ($filename) use ($Connection, $app){
+
+$app->post('/delete'), function
+$app->get('/delete', function () use ($Connection, $app){
+  $filename = $app->request->get('filename');
   $status = $Connection->get_object(BUCKET_NAME, $filename);
   $status = $status->header['_info']['http_code'];
   if ($status != 404) {
