@@ -35,7 +35,7 @@ $app->post('/', function () use ($Connection, $app) {
     if ($status == 404) {
         $size = $_FILES["fileToUpload"]["size"];
         $file_resource = fopen($_FILES["fileToUpload"]["tmp_name"], 'r');
-        $response = $Connection->create_object('my-new-bucket', $filename, array(
+        $response = $Connection->create_object(BUCKET_NAME, $filename, array(
             'fileUpload' => $file_resource,
             'length' => $size,
             'acl' => AmazonS3::ACL_PUBLIC

@@ -39,7 +39,8 @@
             <h5 class="header col s12 light"><a href="<?php echo $url; ?>"><?php echo $filename; ?></a></h5>
         </div>
         <div class="row center">
-            <h7 class="header col s12 light"><a href=""> Upload more</a></h7>
+            <h7 class="header col s12 light"><a href="http://grup2-ceph-04.sisdis.ui.ac.id/imp-swift/"> Upload more</a>
+            </h7>
         </div>
         <br><br>
     </div>
