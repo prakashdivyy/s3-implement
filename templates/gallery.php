@@ -102,14 +102,14 @@
         echo "Harusnya sukses";
         ?>
         <script>
-            var $toastContent = $('<span>File "'+<?php echo $filename; ?>+'" has succesfully been deleted</span>');
+            var $toastContent = $('<span>File <?php echo $filename; ?> has succesfully been deleted</span>');
             Materialize.toast($toastContent, 3000);
         </script>
   <?php } else {
         echo "Harusnya gagal";
         ?>
         <script>
-            var $toastContent = $('<span>Error occured when deleting "'+<?php echo $filename; ?>+'" </span>');
+            var $toastContent = $('<span>Error occured when deleting <?php echo $filename; ?> </span>');
             Materialize.toast($toastContent, 3000);
         </script>
   <?php
