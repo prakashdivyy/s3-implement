@@ -60,10 +60,10 @@ $app->get('/', function () use ($app) {
 $app->get('/delete/:filename', function ($filename) use ($Connection, $app){
   $status = $Connection->get_object(BUCKET_NAME, $filename);
   $status = $status->header['_info']['http_code'];
-  $ObjectsListResponse = $Connection->list_objects(BUCKET_NAME);
-  $Objects = $ObjectsListResponse->body->Contents;
   if ($status != 404) {
     $response = $Connection->delete_object(BUCKET_NAME  , $filename);
+    $ObjectsListResponse = $Connection->list_objects(BUCKET_NAME);
+    $Objects = $ObjectsListResponse->body->Contents;
     if ($response->isOK()){
       $app->render('gallery.php', array('filename' => $filename, 'success' => 1, 'Objects' => $Objects));
     } else {
