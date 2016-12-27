@@ -5,8 +5,8 @@ define('AWS_KEY', 'RKAG1I1VD21A7ZD0DN84');
 define('AWS_SECRET_KEY', 'cEZgXggQOFH7ns8iPDRtFJffog8XjJOfTOt2wZnR');
 define('AWS_CANONICAL_ID', 'grup2');
 define('AWS_CANONICAL_NAME', 'grup2');
-
-$HOST = 'grup2-ceph-04.sisdis.ui.ac.id';
+define('HOST', 'grup2-ceph-04.sisdis.ui.ac.id');
+define('BUCKET_NAME', 'my-new-bucket');
 
 $Connection = new AmazonS3(array(
     'key' => AWS_KEY,
@@ -15,7 +15,7 @@ $Connection = new AmazonS3(array(
     'canonical_name' => AWS_CANONICAL_NAME,
 ));
 
-$Connection->set_hostname($HOST);
+$Connection->set_hostname(HOST);
 
 $Connection->allow_hostname_override(false);
 
@@ -23,7 +23,7 @@ $Connection->enable_path_style();
 
 $app = new \Slim\Slim();
 
-$app->get('/', function () use ($Connection) {
+$app->get('/list', function () use ($Connection) {
     $ListResponse = $Connection->list_buckets();
     $Buckets = $ListResponse->body->Buckets->Bucket;
     foreach ($Buckets as $Bucket) {
@@ -36,6 +36,7 @@ $app->get('/uploaded', function () use ($Connection) {
     $Objects = $ObjectsListResponse->body->Contents;
     foreach ($Objects as $Object) {
         echo $Object->Key . "\t" . $Object->Size . "\t" . $Object->LastModified . "\n";
+        echo "<br/>";
     }
 });
 
@@ -50,5 +51,92 @@ $app->get('/download/:name', function ($name) use ($Connection) {
     $url = preg_replace("/^http:/i", "https:", $url);
     echo $url . "\n";
 });
+
+$app->get('/', function () use ($app) {
+    $app->render('home.php', array('error' => 0));
+});
+
+
+
+$app->get('/delete/:filename', function ($filename) use ($Connection, $app){
+  $status = $Connection->get_object(BUCKET_NAME, $filename);
+  $status = $status->header['_info']['http_code'];
+  if ($status != 404) {
+    $response = $Connection->delete_object(BUCKET_NAME  , $filename);
+    $ObjectsListResponse = $Connection->list_objects(BUCKET_NAME);
+    $Objects = $ObjectsListResponse->body->Contents;
+    if ($response->isOK()){
+      $app->render('gallery.php', array('filename' => $filename, 'success' => 1, 'Objects' => $Objects));
+    } else {
+      $app->render('gallery.php', array('filename' => $filename, 'success' => 0, 'Objects' => $Objects));
+    }
+  }
+});
+
+$app->get('/copy/:filename', function($filename) use ($Connection, $app){
+  $ListResponse = $Connection->list_buckets();
+  $Buckets = $ListResponse->body->Buckets->Bucket;
+  $status = $Connection->get_object(BUCKET_NAME, $filename);
+  $status = $status->header['_info']['http_code'];
+    if ($status != 404) {
+      $app->render('copy.php', array('filename' => $filename, 'bucket_source' => BUCKET_NAME, 'Buckets' => $Buckets));
+    }
+});
+
+$app->post('/copyFile', function () use ($Connection, $app){
+  $filename = $app->request->params('filename');
+  $bucket_source = $app->request->params('bucket_source');
+  $filename_new = $app->request->params('filename_new');
+  $bucket_destination = $app->request->params('bucket_destination');
+  $response = $Connection->copy_object(
+    array( // Source
+        'bucket'   => $bucket_source,
+        'filename' => $filename
+    ),
+    array( // Destination
+        'bucket'   => $bucket_destination,
+        'filename' => $filename_new
+    ),
+    array( // Optional parameters
+        'acl'  => AmazonS3::ACL_PUBLIC
+    )
+  );
+  if ($response->isOK()) {
+    $app->redirect('gallery');
+  } else {
+    $app->redirect('gallery');
+  }
+});
+
+$app->post('/', function () use ($Connection, $app) {
+    $filename = basename($_FILES["fileToUpload"]["name"]);
+    $status = $Connection->get_object(BUCKET_NAME, $filename);
+    $status = $status->header['_info']['http_code'];
+    if ($status == 404) {
+        $size = $_FILES["fileToUpload"]["size"];
+        $file_resource = fopen($_FILES["fileToUpload"]["tmp_name"], 'r');
+        $response = $Connection->create_object('my-new-bucket', $filename, array(
+            'fileUpload' => $file_resource,
+            'length' => $size,
+            'acl' => AmazonS3::ACL_PUBLIC
+        ));
+        if ($response->isOK()) {
+            $uploadURL = 'https://' . HOST . '/' . BUCKET_NAME . '/' . $filename;
+            $app->render('success.php', array('url' => $uploadURL, 'filename' => $filename));
+        } else {
+            $app->render('home.php', array('error' => 1));
+        }
+    } else {
+        $app->render('home.php', array('error' => 1));
+    }
+});
+
+$app->get('/gallery', function () use ($Connection, $app) {
+    $ObjectsListResponse = $Connection->list_objects(BUCKET_NAME);
+    $Objects = $ObjectsListResponse->body->Contents;
+    $app->render('gallery.php', array('Objects' => $Objects));
+});
+
+
 
 $app->run();
