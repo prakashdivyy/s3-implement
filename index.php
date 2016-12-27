@@ -61,7 +61,7 @@ $app->get('/delete/:filename', function ($filename) use ($Connection, $app){
   $status = $Connection->get_object(BUCKET_NAME, $filename);
   $status = $status->header['_info']['http_code'];
   if ($status != 404) {
-    $response = $Connection->delete_object($bucket, $filename);
+    $response = $Connection->delete_object(BUCKET_NAME, $filename);
     if ($response->isOK()){
       $app->render('se-frontend/gallery.php', array('filename' => $filename, 'success' => 1));
     } else {
