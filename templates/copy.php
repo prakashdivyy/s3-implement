@@ -33,8 +33,8 @@
         <br><br>
         <form action="" method="POST" id="data" enctype="multipart/form-data">
             <div class="file-field input-field">
-                <input type="text" name="filename" value="<?php echo $filename ?>" disabled>
-                <input type="text" name="bucket_source" value="<?php echo $bucket_source ?>" disabled>
+                <input type="text" name="filename" value="<?php echo $filename; ?>" disabled>
+                <input type="text" name="bucket_source" value="<?php echo $bucket_source; ?>" disabled>
                 <input type="text" name="filename_new">
                 <select name="bucket_destination">
                     <?php
