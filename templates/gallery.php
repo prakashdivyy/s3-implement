@@ -96,16 +96,16 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
   <script src="http://materializecss.com/templates/starter-template/js/init.js"></script>
   <?php
-    if (isset($success) && isset($filename)) {
+  if (isset($success) && isset($filename)) {
+      echo $success;
       if ($success){?>
         <script>
-            var $toastContent = $('<span>File '.$filename.' has succesfully been deleted</span>');
+            var $toastContent = $('<span>File '.<?php echo $filename; ?>.' has succesfully been deleted</span>');
             Materialize.toast($toastContent, 3000);
         </script>
-  <?php
-      } else { ?>
+  <?php } else { ?>
         <script>
-            var $toastContent = $('<span>Error occured when deleting '.$filename.' </span>');
+            var $toastContent = $('<span>Error occured when deleting '.<?php echo $filename; ?>.' </span>');
             Materialize.toast($toastContent, 3000);
         </script>
   <?php
