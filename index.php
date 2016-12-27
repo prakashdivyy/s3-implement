@@ -61,11 +61,11 @@ $app->get('/delete/:filename', function ($filename) use ($Connection){
   $status = $Connection->get_object(BUCKET_NAME, $name);
   $status = $status->header['_info']['http_code'];
   if ($status != 404) {
-    $response = $s3->delete_object($bucket, $name);
+    $response = $s3->delete_object($bucket, $filename);
     if ($response->isOK()){
-      $app->render('se-frontend/gallery.php', array('filename' => $name, 'success' => 1));
+      $app->render('se-frontend/gallery.php', array('filename' => $filename, 'success' => 1));
     } else {
-      $app->render('se-frontend/gallery.php', array('filename' => $name, 'success' => 0));
+      $app->render('se-frontend/gallery.php', array('filename' => $filename, 'success' => 0));
     }
   }
 });
