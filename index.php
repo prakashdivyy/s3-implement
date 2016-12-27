@@ -79,7 +79,7 @@ $app->get('/copy/:filename', function($filename) use ($Connection, $app){
   $status = $Connection->get_object(BUCKET_NAME, $filename);
   $status = $status->header['_info']['http_code'];
     if ($status != 404) {
-      $app->render->('copy.php', array('filename' => $filename, 'bucket_source' => BUCKET_NAME, 'bucket_list' => $Buckets));
+      $app->render('copy.php', array('filename' => $filename, 'bucket_source' => BUCKET_NAME, 'bucket_list' => $Buckets));
     }
 });
 
