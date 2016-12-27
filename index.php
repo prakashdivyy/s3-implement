@@ -90,19 +90,24 @@ $app->post('/copy/:filename', function () use ($Connection, $app) {
     $status = $Connection->get_object($bucket_destination, $filename_new);
     $status = $status->header['_info']['http_code'];
     if ($status == 404) {
-        $response = $Connection->copy_object(
-            array( // Source
-                'bucket' => $bucket_source,
-                'filename' => $filename
-            ),
-            array( // Destination
-                'bucket' => $bucket_destination,
-                'filename' => $filename_new
-            ),
-            array( // Optional parameters
-                'acl' => AmazonS3::ACL_PUBLIC
-            )
-        );
+      $response = $Connection->copyObject(array(
+        'Bucket'     => $bucket_destination,
+        'Key'        => $filename_new,
+        'CopySource' => "{$bucket_source}/{$filename}"
+      ));
+        // $response = $Connection->copy_object(
+        //     array( // Source
+        //         'bucket' => $bucket_source,
+        //         'filename' => $filename
+        //     ),
+        //     array( // Destination
+        //         'bucket' => $bucket_destination,
+        //         'filename' => $filename_new
+        //     ),
+        //     array( // Optional parameters
+        //         'acl' => AmazonS3::ACL_PUBLIC
+        //     )
+        // );
         $ObjectsListResponse = $Connection->list_objects(BUCKET_NAME);
         $Objects = $ObjectsListResponse->body->Contents;
         if ($response->isOK()) {
